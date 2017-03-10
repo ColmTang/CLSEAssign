@@ -1,0 +1,106 @@
+*****************************
+*** DOCUMENTATION ON CODE ***
+*****************************
+
+1. SUBDIVISION OF TASKS:
+************************
+	
+	I, Lorenzo Battilocchi, started the project off by coding part of Section A. I initialised the struct, and
+	introduced loops and error checking to check that the values inputted were conform with the assignment 
+	specifications given to us as well as with the logical execution of the game. 
+
+	My partner, Colm Tang, wrote parts B, C and D, implementing the algorithms for creation/allocation of slots, 
+	movement and combat between players respectively. I provided him with a "pseudo-code" implementation of B.
+
+	I then tested the code with case tests to ensure that it would run smoothly in any circumstance.
+
+2. PROGRAM DESIGN AND FUNCTIONALITY
+***********************************
+	
+	We found it easier to write the program as one block of code, rather than using functions. We then commented 
+	the entire code to make it more understandable where ambiguity existed or could have existed. 
+
+	DETAILS:
+	********
+	A function to implement attack was included in the file. 
+		SECTION A:
+		**********
+
+		We initialised the struct which holds all out player information (type, name, skills, current slot), as 
+		well as a struct for slot types.
+
+		At the start of the main() function execution, we ask the user to input the number of players they want 
+		in the game. This is checked for incorrect parameters by the while loop in lines 41-45, which checks 
+		that the number of players entered is less than or equal 6 and not less than 2, ie. in the range (1<n<7), 
+		where n is the number of players entered. 
+
+		Then we proceeded to querying the user for information on those players like name and player type. The 
+		player type was allocated by a series of if and else if statements. The user is asked to enter a number 
+		corresponding to the player type they want.
+
+		SECTION B:
+		**********
+
+		According to their choice, the capabilities are set randomly according to fixed limits imposed by the 
+		% (modulo) operator on the random number generator srand(time(NULL)).
+
+		These capabilities, contained in the struct players, are then printed for each player in turn.
+
+		In this section, we create the slots that will be our board for the game and allocate the players to 
+		them randomly. 
+
+		Since the maximum number of slots can be 20, we limit our struct array slot[] to 20 values. The user is 
+		queried to input the number of slots they want in the game, and this value is checked agains a number of
+		conditions in the while loop in lines 136-142. If these conditions are not met, the user is asked to try
+		again until they enter values that conform to the latter.
+
+		Their choice is then printed, and a for loop is used to randomly allocate the slot types to the slots. 
+		This is achieved by a random number generator (modulo 3), which will return an integer in the range 0, 
+		1, 2. This is then checked using a series of if statements, and the corresponding types are allocated to 
+		each slot.
+
+		Following this, the players are allocated randomly using a similar implementation of the rand() 
+		function, this time modulo (number of slots), so that we get a number between 0 and (num_slots - 1). A 
+		for loop takes care of the allocation process in lines 169-172.  A second for loop was introduced in our 
+		program design to avert two players being allocated to the same slot, and if so, the player is 
+		reallocated until they are in a free slot.
+
+		Following this, a summary of this allocation is printed by the for loop in lines 186-189 containing the player's number and their assigned slot number.
+	
+		We allocated turns to each player in the same order each time.
+
+		SECTION C
+		*********
+
+		We also implemented the movement functionality in lines 207-554. In this section, we also carry out the stats changes according to the slots. 
+
+		We calculated cases for when the player is at the edge of the board and the slot beside tehm is occupied by
+		another player (lines 209-221), when the player is at the edge of the board bbut the slot beside them is free
+		(222 - 263) in which we also update the capabilities of the player according to criteria specified in section
+		C of the provided document. 
+
+
+			If the player goes to a "Level Ground" slot, their capabilities remain the same.
+
+			If the player moves to a "Hill" slot, if their dexterity level is less than 50, they lose 10 Strenght points (lines 231-234) up to a minimum of 0. Otherwise, if their Dexterity level is 60 or greater, they 
+			gain 10	Strenght points (lines 249-252), up to a maximum of 100. 
+
+			If the player moves to a "City" slot, if their smartness is 50 or less, they will lose 10 magic points, up 
+			to a minimum of 0. Otherwise, if their smartness is greater than 60, they gain 10 magic points to a 
+			maximum of 100. 
+		
+		After each of these steps the players are asked whether they want to move or attack other players, according 
+		to the current game setup.
+
+		Subsequently, the turn ends and is passed on to the next player.
+
+		This is repeated in a similar fashion for all the player dispositions.
+
+		In case a player is within attack range of another, a choice needs to be made. A series of if statements make this possible. The player needs to choose between [1] Attack the player in front or [2] Attack the player behind. In each of these cases, implementations of the health points changes were provided, as described in Section D. 
+
+		After the conclusion of each turn, the positions and stats of each player are printed on-screen for information purposes.
+
+		CONCLUSION OF GAME
+		******************
+
+		The game ends after each player has completed their turn, by printing out the "final stats" of each player.
